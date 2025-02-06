@@ -1,5 +1,4 @@
 import { MongoClient } from 'mongodb';
-import { faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -13,7 +12,7 @@ const setup = async () => {
 
     const hasData = await client
       .db('test')
-      .collection('users')
+      .collection('images')
       .countDocuments();
 
     if (hasData) {
@@ -22,26 +21,20 @@ const setup = async () => {
       return;
     }
 
-    const records = [...Array(10)].map(() => {
-      const [fName, lName] = faker.name.findName().split(' ');
-      const username = faker.internet.userName(fName, lName);
-      const email = faker.internet.email(fName, lName);
-      const image = faker.image.people(640, 480, true);
-
+    const images = [...Array(100)].map((_, index) => {
       return {
-        name: `${fName} ${lName}`,
-        username,
-        email,
-        image,
-        followers: 0,
-        emailVerified: null
-      };
+        promptNumber: index,
+        choices: [
+          { choice: 0, count: 0 },
+          { choice: 1, count: 0 },
+        ]
+      }
     });
 
     const insert = await client
       .db('test')
-      .collection('users')
-      .insertMany(records);
+      .collection('images')
+      .insertMany(images);
 
     if (insert.acknowledged) {
       console.log('Successfully inserted records');
