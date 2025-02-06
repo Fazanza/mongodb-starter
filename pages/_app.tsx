@@ -68,7 +68,7 @@ export default function MyApp({
         body: JSON.stringify(data),
       });
 
-      if (true) {
+      if (response) {
         const code = generateRandomCode();
         setGeneratedCode(code);
       } else {
@@ -97,13 +97,13 @@ export default function MyApp({
           <div className="mb-4">
             <h3 className="text-lg font-semibold text-gray-800 text-center">Instructions</h3>
             <p className="text-sm text-gray-600 mt-2">
-              <b>1)</b> Answer 4 questions for each pair of images. For each question, select either "Image 1" or "Image 2" based on which one fits the criteria better.
+              <b>1)</b> Answer 4 questions for each pair of images. For each question, select either &quot;Image 1&quot; or &quot;Image 2&quot; based on which one fits the criteria better.
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <b>2)</b> If you&apos;re unsure about your choice, select "Can&apos;t Decide."
+              <b>2)</b> If you&apos;re unsure about your choice, select &quot;Can&apos;t Decide&quot;.
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <b>3)</b> Once you&apos;ve answered all the questions, click the "Submit" button at the bottom of the page. You will then receive a unique 15-digit code.
+              <b>3)</b> Once you&apos;ve answered all the questions, click the &quot;Submit&quot; button at the bottom of the page. You will then receive a unique 15-digit code.
             </p>
           </div>
         </div>
