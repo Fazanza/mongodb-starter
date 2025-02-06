@@ -11,11 +11,11 @@ const setup = async () => {
     await client.connect();
 
     const hasData = await client
-      .db('test')
+      .db('imageDB')
       .collection('images')
       .countDocuments();
 
-    if (hasData) {
+    if (hasData > 0) {
       console.log('Database already exists with data');
       client.close();
       return;
@@ -23,16 +23,18 @@ const setup = async () => {
 
     const images = [...Array(100)].map((_, index) => {
       return {
-        promptNumber: index,
+        promptNumber: index + 1,
         choices: [
-          { choice: 0, count: 0 },
-          { choice: 1, count: 0 },
+          { Image1_q1: 0, Image2_q1: 0 },
+          { Image1_q2: 0, Image2_q2: 0 },
+          { Image1_q3: 0, Image2_q3: 0 },
+          { Image1_q4: 0, Image2_q4: 0 },
         ]
       }
     });
 
     const insert = await client
-      .db('test')
+      .db('imageDB')
       .collection('images')
       .insertMany(images);
 
@@ -41,10 +43,6 @@ const setup = async () => {
     }
   } catch (error) {
     return 'Database is not ready yet';
-  } finally {
-    if (client) {
-      await client.close();
-    }
   }
 };
 
