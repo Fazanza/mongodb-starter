@@ -1,14 +1,17 @@
-import { MongoClient } from 'mongodb';
-import clientPromise from '@/lib/mongodb';
+import { NextApiRequest, NextApiResponse } from 'next'; // Import types
+import clientPromise from '@/lib/mongodb'; // Assuming clientPromise is imported correctly
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === 'POST') {
     try {
       const client = await clientPromise;
       const db = client.db('imageDB');
       const collection = db.collection('images');
 
-      const data = req.body; // Assuming you pass your data here
+      const data = req.body; // The data passed in the request body
       const response = await collection.insertOne(data);
 
       res.status(200).json({ message: 'Data saved successfully', response });
