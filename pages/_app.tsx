@@ -100,14 +100,14 @@ export default function MyApp({
               <b>1)</b> Answer 4 questions for each pair of images. For each question, select either "Image 1" or "Image 2" based on which one fits the criteria better.
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <b>2)</b> If you're unsure about your choice, select "Can't Decide."
+              <b>2)</b> If you&apos;re unsure about your choice, select "Can&apos;t Decide."
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <b>3)</b> Once you've answered all the questions, click the "Submit" button at the bottom of the page. You will then receive a unique 15-digit code.
+              <b>3)</b> Once you&apos;ve answered all the questions, click the "Submit" button at the bottom of the page. You will then receive a unique 15-digit code.
             </p>
-            </div>
           </div>
         </div>
+      </div>
 
       <div className="items-center space-x-3 text-center mb-6">
         <label htmlFor="workID" className="text-m font-medium text-gray-700">
@@ -151,84 +151,85 @@ export default function MyApp({
             </div>
 
             <div className="space-y-4 w-full text-center">
-            {[
-              {
-                question: "Which image appears more detailed and sharp?",
-                questionId: "1"
-              },
-              {
-                question: "Which image has better color accuracy and vibrancy?",
-                questionId: "2"
-              },
-              {
-                question: "Which image correctly displays the prompt?",
-                questionId: "3"
-              },
-              {
-                question: "Which image has fewer visible artifacts or distortions?",
-                questionId: "4"
-              }
-            ].map(({ question, questionId }) => (
-              <div key={questionId} className="flex ml-10 space-x-4">
-                <div className="flex flex-col items-start space-y-2">
-                  <label htmlFor={`question-${questionId}-${num}-1`} className="text-sm font-semibold">
-                    <strong>{question}</strong>
-                  </label>
-                  <div className="flex space-x-4">
-                    <div className="flex space-x-2">
-                      <input
-                        type="radio"
-                        name={`question-${questionId}-${num}`}
-                        value="Image 1"
-                        id={`question-${questionId}-${num}-1`}
-                        onChange={() => handleResponseChange(`question-${questionId}-${num}`, 'Image 1')}
-                      />
-                      <label htmlFor={`question-${questionId}-${num}-1`} className="text-sm">
-                        Image 1
-                      </label>
-                    </div>
-                    <div className="flex space-x-2">
-                      <input
-                        type="radio"
-                        name={`question-${questionId}-${num}`}
-                        value="Image 2"
-                        id={`question-${questionId}-${num}-2`}
-                        onChange={() => handleResponseChange(`question-${questionId}-${num}`, 'Image 2')}
-                      />
-                      <label htmlFor={`question-${questionId}-${num}-2`} className="text-sm">
-                        Image 2
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        name={`question-${questionId}-${num}`}
-                        value="Can't Decide"
-                        id={`question-${questionId}-${num}-3`}
-                        onChange={() => handleResponseChange(`question-${questionId}-${num}`, "Can't Decide")}
-                      />
-                      <label htmlFor={`question-${questionId}-${num}-3`} className="text-sm">
-                        Can't Decide
-                      </label>
+              {[
+                {
+                  question: 'Which image appears more detailed and sharp?',
+                  questionId: '1'
+                },
+                {
+                  question: 'Which image has better color accuracy and vibrancy?',
+                  questionId: '2'
+                },
+                {
+                  question: 'Which image correctly displays the prompt?',
+                  questionId: '3'
+                },
+                {
+                  question: 'Which image has fewer visible artifacts or distortions?',
+                  questionId: '4'
+                }
+              ].map(({ question, questionId }) => (
+                <div key={questionId} className="flex ml-10 space-x-4">
+                  <div className="flex flex-col items-start space-y-2">
+                    <label htmlFor={`question-${questionId}-${num}-1`} className="text-sm font-semibold">
+                      <strong>{question}</strong>
+                    </label>
+                    <div className="flex space-x-4">
+                      <div className="flex space-x-2">
+                        <input
+                          type="radio"
+                          name={`question-${questionId}-${num}`}
+                          value="Image 1"
+                          id={`question-${questionId}-${num}-1`}
+                          onChange={() => handleResponseChange(`question-${questionId}-${num}`, 'Image 1')}
+                        />
+                        <label htmlFor={`question-${questionId}-${num}-1`} className="text-sm">
+                          Image 1
+                        </label>
+                      </div>
+                      <div className="flex space-x-2">
+                        <input
+                          type="radio"
+                          name={`question-${questionId}-${num}`}
+                          value="Image 2"
+                          id={`question-${questionId}-${num}-2`}
+                          onChange={() => handleResponseChange(`question-${questionId}-${num}`, 'Image 2')}
+                        />
+                        <label htmlFor={`question-${questionId}-${num}-2`} className="text-sm">
+                          Image 2
+                        </label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          name={`question-${questionId}-${num}`}
+                          value="Can&apos;t Decide"
+                          id={`question-${questionId}-${num}-3`}
+                          onChange={() => handleResponseChange(`question-${questionId}-${num}`, "Can&apos;t Decide")}
+                        />
+                        <label htmlFor={`question-${questionId}-${num}-3`} className="text-sm">
+                          Can&apos;t Decide
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
 
-      {!generatedCode && <div className="flex justify-center mt-8 space-x-4 m-6">
-        <button
-          onClick={handleSubmit}
-          className="bg-blue-500 text-white py-4 px-8 text-lg rounded-md"
-        >
-          Submit Responses
-        </button>
-      </div>
-      }
+      {!generatedCode && (
+        <div className="flex justify-center mt-8 space-x-4 m-6">
+          <button
+            onClick={handleSubmit}
+            className="bg-blue-500 text-white py-4 px-8 text-lg rounded-md"
+          >
+            Submit Responses
+          </button>
+        </div>
+      )}
 
       {generatedCode && (
         <div className="flex justify-center items-center mt-6 space-x-6 m-6">
