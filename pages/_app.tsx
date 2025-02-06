@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import React, { useState, useEffect } from 'react';
+import clientPromise from '@/lib/mongodb';
 import Papa from 'papaparse'; // CSV parser
 
 export default function MyApp({
@@ -10,6 +11,7 @@ export default function MyApp({
   const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
   const [prompts, setPrompts] = useState<{ [key: number]: string }>({});
   const [responses, setResponses] = useState<{ [key: string]: string }>({});
+  const [workerID, setWorkerID] = useState<string>(''); // State to store Worker ID
   const [generatedCode, setGeneratedCode] = useState<string | null>(null); // To store the generated code
 
   useEffect(() => {
@@ -49,6 +51,10 @@ export default function MyApp({
     }));
   };
 
+  const handleWorkerIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWorkerID(e.target.value); // Update Worker ID as the user types
+  };
+
   const generateRandomCode = () => {
     return Math.floor(100000000000000 + Math.random() * 900000000000000).toString();
   };
@@ -56,11 +62,12 @@ export default function MyApp({
   // Handle form submission
   const handleSubmit = async () => {
     const data = {
-      responses,
+      workerID,  // Include the workerID in the data
+      responses,  // All the responses collected in the responses object
     };
 
     try {
-      const response = await fetch('/api/submit-responses', {
+      const response = await fetch('/api/image', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,13 +75,16 @@ export default function MyApp({
         body: JSON.stringify(data),
       });
 
-      if (response) {
+      if (response.ok) {
+        const result = await response.json();
         const code = generateRandomCode();
         setGeneratedCode(code);
+        console.log(result.message);
       } else {
         alert('Error submitting responses.');
       }
     } catch (error) {
+      console.error('Error:', error);
       alert('Error submitting responses.');
     }
   };
@@ -116,6 +126,8 @@ export default function MyApp({
         <input
           type="text"
           id="workID"
+          value={workerID}  // Bind the input field to the workerID state
+          onChange={handleWorkerIDChange}  // Handle change to update the state
           placeholder="ex: 989485250"
           className="p-2 border border-gray-300 rounded-md w-64 h-8 text-center focus:ring focus:ring-blue-200"
         />

@@ -1,29 +1,22 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { updateImage } from '@/lib/api/image';
-import { getSession } from 'next-auth/react';
-import { getMdxSource } from '@/lib/api/image';
+import { MongoClient } from 'mongodb';
+import clientPromise from '@/lib/mongodb';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === 'PUT') {
-    const { username, bio } = req.body;
-    const session = await getSession({ req });
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
     try {
-      const result = await updateImage(username, bio);
-      if (result) {
-        await res.revalidate(`/${username}`);
-      }
-      const bioMdx = await getMdxSource(bio); // return bioMdx to optimistically show updated state
-      return res.status(200).json(bioMdx);
-    } catch (e: any) {
-      console.log(e);
-      return res.status(500).json({
-        error: e.toString()
-      });
+      const client = await clientPromise;
+      const db = client.db('imageDB');
+      const collection = db.collection('images');
+
+      const data = req.body; // Assuming you pass your data here
+      const response = await collection.insertOne(data);
+
+      res.status(200).json({ message: 'Data saved successfully', response });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error saving data', error });
     }
   } else {
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
+    res.status(405).json({ message: 'Method not allowed' });
   }
 }

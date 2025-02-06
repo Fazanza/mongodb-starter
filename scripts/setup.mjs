@@ -21,7 +21,7 @@ const setup = async () => {
       return;
     }
 
-    const images = [...Array(100)].map((_, index) => {
+    const images = [...Array(1)].map((_, index) => {
       return {
         promptNumber: index + 1,
         choices: [
@@ -40,6 +40,7 @@ const setup = async () => {
 
     if (insert.acknowledged) {
       console.log('Successfully inserted records');
+      client.close();
     }
   } catch (error) {
     return 'Database is not ready yet';
