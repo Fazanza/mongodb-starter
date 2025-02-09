@@ -17,7 +17,7 @@ export default function MyApp({
   useEffect(() => {
     // Generate 10 unique random numbers between 1 and 99
     const numbers = new Set<number>();
-    while (numbers.size < 10) {
+    while (numbers.size < 6) {
       numbers.add(Math.floor(Math.random() * 99) + 1);
     }
     setRandomNumbers(Array.from(numbers));
@@ -61,6 +61,24 @@ export default function MyApp({
 
   // Handle form submission
   const handleSubmit = async () => {
+    if (!workerID.trim()) {
+      alert('Please enter your Worker ID.');
+      return;
+    }
+
+    console.log(responses)
+    if (Object.keys(responses).length != randomNumbers.length) {
+      alert("Please answer all the questions before submitting");
+      return;
+    }
+
+    for (const key of Object.keys(responses)) {
+      if (responses[key].length != 4) {
+        alert(`Please answer all the questions for every image before submitting`);
+        return;
+      }
+    }
+
     const data = {
       workerID,  // Include the workerID in the data
       responses,  // All the responses collected in the responses object
@@ -98,22 +116,15 @@ export default function MyApp({
       <div className="w-full mb-6">
         <div className="bg-gray-100 p-6 rounded-lg shadow-lg mb-8 mx-auto w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
           <div className="mb-4">
-            <h2 className="text-xl font-semibold text-gray-800 text-center">Description</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              You will be shown two AI-generated images. Your task is to answer a series of questions about the images and indicate which one better represents the given criteria.
-            </p>
-          </div>
-
-          <div className="mb-4">
             <h3 className="text-lg font-semibold text-gray-800 text-center">Instructions</h3>
             <p className="text-sm text-gray-600 mt-2">
-              <b>1)</b> Answer 4 questions for each pair of images. For each question, select either &quot;Image 1&quot; or &quot;Image 2&quot; based on which one fits the criteria better.
+              <b>1)</b> Answer questions for each of the 6 pairs of AI generated images. For each question, select either &quot;Image 1&quot; or &quot;Image 2&quot; based on which one fits the criteria better.
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <b>2)</b> If you&apos;re unsure about your choice, select &quot;Can&apos;t Decide&quot;.
+              <b>2)</b> If each choice equally represents the criteria, select &quot;Can&apos;t Decide&quot;.
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              <b>3)</b> Once you&apos;ve answered all the questions, click the &quot;Submit&quot; button at the bottom of the page. You will then receive a unique 15-digit code.
+              <b>3)</b> Once you&apos;ve answered all the questions, click the &quot;Submit&quot; button at the bottom of the page to receive a unique 15-digit code.
             </p>
           </div>
         </div>
@@ -121,7 +132,7 @@ export default function MyApp({
 
       <div className="items-center space-x-3 text-center mb-6">
         <label htmlFor="workID" className="text-m font-medium text-gray-700">
-          <b>Worker ID:</b>
+          <b>Amazon Worker ID:</b>
         </label>
         <input
           type="text"
@@ -137,7 +148,7 @@ export default function MyApp({
         {randomNumbers.map((num) => (
           <div
             key={num}
-            className="flex flex-col items-center bg-white shadow-md p-6 rounded-lg border w-full md:w-[500px] lg:w-[700px] border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
+            className="flex flex-col items-center bg-white shadow-md p-6 rounded-lg border w-full md:w-3/4 lg:w-2/3 mx-auto border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
           >
             <div className="text-sm italic font-bold mb-4 text-center">
               {prompts[num] ? prompts[num] : 'Loading prompt...'}
@@ -162,14 +173,14 @@ export default function MyApp({
               </div>
             </div>
 
-            <div className="space-y-4 w-full text-center">
+            <div className="space-y-4 w-1/2 mx-auto text-center">
               {[
                 {
                   question: 'Which image appears more detailed and sharp?',
                   questionId: '1'
                 },
                 {
-                  question: 'Which image has better color accuracy and vibrancy?',
+                  question: 'Which image has better color accuracy?',
                   questionId: '2'
                 },
                 {
@@ -177,7 +188,7 @@ export default function MyApp({
                   questionId: '3'
                 },
                 {
-                  question: 'Which image has fewer visible artifacts or distortions?',
+                  question: 'Which image has more distortions?',
                   questionId: '4'
                 }
               ].map(({ question, questionId }) => (
@@ -215,12 +226,12 @@ export default function MyApp({
                         <input
                           type="radio"
                           name={`question-${questionId}-${num}`}
-                          value="Can&apos;t Decide"
+                          value="Images equally match criteria"
                           id={`question-${questionId}-${num}-3`}
-                          onChange={() => handleResponseChange(`question-${questionId}-${num}`, "Can&apos;t Decide")}
+                          onChange={() => handleResponseChange(`question-${questionId}-${num}`, "Images equally match criteria")}
                         />
                         <label htmlFor={`question-${questionId}-${num}-3`} className="text-sm">
-                          Can&apos;t Decide
+                          Images equally match criteria
                         </label>
                       </div>
                     </div>
