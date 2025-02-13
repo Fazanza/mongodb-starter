@@ -66,19 +66,6 @@ export default function MyApp({
       return;
     }
 
-    console.log(responses)
-    if (Object.keys(responses).length != randomNumbers.length) {
-      alert("Please answer all the questions before submitting");
-      return;
-    }
-
-    for (const key of Object.keys(responses)) {
-      if (responses[key].length != 4) {
-        alert(`Please answer all the questions for every image before submitting`);
-        return;
-      }
-    }
-
     const data = {
       workerID,  // Include the workerID in the data
       responses,  // All the responses collected in the responses object
