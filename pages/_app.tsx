@@ -26,7 +26,7 @@ export default function MyApp({
   useEffect(() => {
     // Generate 5 unique random numbers between 1 and 24
     const numbers = new Set<number>();
-    while (numbers.size < 1) {
+    while (numbers.size < 5) {
       numbers.add(Math.floor(Math.random() * 24) + 1);
     }
     setRandomNumbers(Array.from(numbers));
