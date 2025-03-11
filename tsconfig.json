@@ -25,6 +25,14 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tailwind.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "tailwind.config.js",
+    "lib/components/ChatComponent.js",
+    "pages/api/chat.js",
+    "pages/api/imageToBase64.js"
+  ],
   "exclude": ["node_modules"]
 }
