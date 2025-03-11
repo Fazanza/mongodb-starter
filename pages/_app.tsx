@@ -2,16 +2,15 @@ import '@/styles/globals.css';
 import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import React, { useState, useEffect } from 'react';
-import fs from 'fs'
 
 let image_analysis: { [key: number]: string } = {
-    1: "AI-Generated: The image exhibits soft focus, unnatural artifacts, and slight distortions in hands and objects. Textures may appear overly smooth, and background elements can be warped or inconsistent.",
-    2: "Real Image: The image has sharp details, natural lighting, and consistent textures. Hands, facial features, and background elements appear well-defined without distortions or artificial smoothness."
-}
+  1: "AI-Generated: The image exhibits soft focus, unnatural artifacts, and slight distortions in hands and objects. Textures may appear overly smooth, and background elements can be warped or inconsistent.",
+  2: "Real Image: The image has sharp details, natural lighting, and consistent textures. Hands, facial features, and background elements appear well-defined without distortions or artificial smoothness.",
+};
 
 // Image 1-12 is AI : 13-24 is real
 export default function MyApp({
-  pageProps: { session, ...pageProps }
+  pageProps: { session, ...pageProps },
 }: AppProps) {
   const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
   const [prompts, setPrompts] = useState<{ [key: number]: string }>({});
@@ -55,7 +54,6 @@ export default function MyApp({
     return Math.floor(100000000000000 + Math.random() * 900000000000000).toString();
   };
 
-  // Get AI feedback for current image
   // Handle form submission
   const handleSubmit = async () => {
     if (!workerID.trim()) {
@@ -71,9 +69,9 @@ export default function MyApp({
     }
 
     const data = {
-      workerID,  // Include the workerID in the data
-      responses,  // All the responses collected in the responses object
-      reasoning,  // Include reasoning for each response
+      workerID, // Include the workerID in the data
+      responses, // All the responses collected in the responses object
+      reasoning, // Include reasoning for each response
     };
 
     try {
@@ -124,12 +122,12 @@ export default function MyApp({
 
     // Check if the answer is correct
     const isCorrect = checkAnswer(currentNum, currentResponse);
-    console.log(isCorrect)
+    console.log(isCorrect);
 
     // Update previousAnswers state
-    setPreviousAnswers(prev => ({
+    setPreviousAnswers((prev) => ({
       ...prev,
-      [currentNum]: isCorrect
+      [currentNum]: isCorrect,
     }));
 
     // If answer is incorrect, set flag to get AI help for next question
@@ -154,12 +152,12 @@ export default function MyApp({
   const getAIFeedbackForNextQuestion = async (imageNumber: number, reasoning: string) => {
     setAiLoading(true);
 
-    const index = Math.floor((imageNumber - 1)/ 12) + 1
-    let messageString = "Using the image judgement provided here from AI previously:"
-    messageString += image_analysis[index]
-    messageString += ", explain why the following reasoning is incorrect for why the image is AI-generated or not: "
-    messageString += reasoning
-    console.log(messageString)
+    const index = Math.floor((imageNumber - 1) / 12) + 1;
+    let messageString = "Using the image judgement provided here from AI previously:";
+    messageString += image_analysis[index];
+    messageString += ", explain why the following reasoning is incorrect for why the image is AI-generated or not: ";
+    messageString += reasoning;
+    console.log(messageString);
 
     try {
       const response = await fetch('/api/chat', {
@@ -168,7 +166,7 @@ export default function MyApp({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: messageString
+          message: messageString,
         }),
       });
 
@@ -184,8 +182,6 @@ export default function MyApp({
       setAiLoading(false);
     }
   };
-
-
 
   // Calculate progress percentage
   const progressPercentage = ((currentQuestionIndex + 1) / randomNumbers.length) * 100;
@@ -225,8 +221,8 @@ export default function MyApp({
           <input
             type="text"
             id="workID"
-            value={workerID}  // Bind the input field to the workerID state
-            onChange={handleWorkerIDChange}  // Handle change to update the state
+            value={workerID} // Bind the input field to the workerID state
+            onChange={handleWorkerIDChange} // Handle change to update the state
             placeholder="ex: 989485250"
             className="p-2 border border-gray-300 rounded-md w-64 h-8 text-center focus:ring focus:ring-blue-200"
           />
@@ -279,7 +275,7 @@ export default function MyApp({
               {/* New reasoning text area */}
               <div className="w-full mx-auto mt-4">
                 <label htmlFor={`reasoning-${randomNumbers[currentQuestionIndex]}`} className="text-sm font-semibold block text-center mb-2">
-                  <strong>Why do you think this is or isn't AI-generated?</strong>
+                  <strong>Why do you think this is or isn&apos;t AI-generated?</strong>
                 </label>
                 <textarea
                   id={`reasoning-${randomNumbers[currentQuestionIndex]}`}
@@ -296,11 +292,13 @@ export default function MyApp({
         {/* AI Feedback section */}
         {feedback && (
           <div className="mt-4 mb-6 mx-auto max-w-2xl">
-            <div className={`p-4 rounded-lg ${
-              previousAnswers[randomNumbers[currentQuestionIndex]]
-                ? "bg-green-50 border border-green-200"
-                : "bg-yellow-50 border border-yellow-200"
-            }`}>
+            <div
+              className={`p-4 rounded-lg ${
+                previousAnswers[randomNumbers[currentQuestionIndex]]
+                  ? "bg-green-50 border border-green-200"
+                  : "bg-yellow-50 border border-yellow-200"
+              }`}
+            >
               <h3 className="font-semibold mb-2">
                 {previousAnswers[randomNumbers[currentQuestionIndex]]
                   ? "Correct! AI Assistant's Analysis:"
@@ -363,7 +361,6 @@ export default function MyApp({
             </button>
           </div>
         )}
-
       </div>
     </SessionProvider>
   );
