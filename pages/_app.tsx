@@ -198,14 +198,14 @@ export default function MyApp({
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-gray-800 text-center">Instructions</h3>
               <p className="text-sm text-gray-600 mt-2">
-                <b>1)</b> Answer for each of the next {randomNumbers.length} questions whether it's AI-generated or a genuine photograph. If you get any of the answer's wrong,
+                <b>1)</b> Answer for each of the next {randomNumbers.length} questions whether it AI-generated or a genuine photograph. If you get any of the answers wrong,
                 an AI-assistant will assist you in answering the photos after that photo.
               </p>
               <p className="text-sm text-gray-600 mt-2">
                 <b>2)</b> Explain your reasoning for your answer in the text box provided.
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                <b>3)</b> Use the 'Next' and 'Previous' buttons to navigate between questions.
+                <b>3)</b> Use the Next and Previous buttons to navigate between questions.
               </p>
               <p className="text-sm text-gray-600 mt-2">
                 <b>4)</b> Once you&apos;ve answered all the questions, click the &quot;Submit&quot; button at the bottom of the page to receive a unique 15-digit code.
